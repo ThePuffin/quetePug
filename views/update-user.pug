@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h3 creer une nouvelle entrée
+  form(method="POST", action=`/users/${entree}?_method=PUT`)
+        input(class='form-control', required="required", name="name")
+        
+        button(type="submit") ajouter
+
+ 
+
