@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 /* GET home page. */
-router.get("/", (req, res, next) => res.send(`Salut si tu ajouter /users  ? `));
+router.get("/", (req, res, next) =>
+  res.send(`Salut si tu ajouter /users/bob ou /users/2  ? `)
+);
 
 /* put user with user 
 router.put("/:name", (req, res) =>
@@ -23,18 +25,18 @@ router.get("/coucou-pug", (req, res) =>
     sayHello: "Hello buddy"
   })
 );*/
-
+//quand on rentre un nom nombre users
 router.get("/users/:entree(\\D+)", (req, res) =>
   res.render("update-user", { entree: req.params.entree })
 );
-router.get("/users/:entree(\\d+)", (req, res) =>
-  res.render("delete-user", { entree: req.params.entree })
-);
-
 router.put("/users/:entree", (req, res) => {
   res.send(`The new name is ${req.body.name}`);
 });
 
+//quand on rentre un chiffre
+router.get("/users/:entree(\\d+)", (req, res) =>
+  res.render("delete-user", { entree: req.params.entree })
+);
 router.delete("/users/:entree", (req, res) =>
   res.send(`No more user with id ${req.body.number}`)
 );
