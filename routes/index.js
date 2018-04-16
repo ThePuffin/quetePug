@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const nodemailer = require("nodemailer");
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
   req.session.maVariable = true;
-  res.send(`Salut si tu veux te connecter /session-in `);
+  res.send(`Salut si tu veux te connecter /session-in
+  si tu veux envoyer un mail /askForCookiesRecipe `);
 });
 
 /* put user with user 
@@ -64,6 +66,45 @@ router.get("/session-in", (req, res) => {
 
 router.get("/session-out", (req, res) => {
   res.render("session-out", { song: req.session.song });
+});
+
+/*------------------- quete email ---------------------*/
+
+//transporter nodemailer
+
+var smtpTransport = nodemailer.createTransport({
+  host: "smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "707e22fdffd16a",
+    pass: "6a6a629ee29839"
+  }
+});
+
+router.get("/askForCookiesRecipe", (req, res) => {
+  smtpTransport.sendMail(
+    {
+      from: "gmail.user@gmail.com",
+      to: "supergrandma@yopmail.com",
+      subject: "Coucou !", // Sujet
+      text: "Cookie monster wants your receipe", // plaintext body
+      html: `Hello Grandma
+      <b>if you want me to have kid</b> you had to give me your cookie's receipe.
+      Else, I will not know what is to be a parent.
+      XXX
+      Vinz` // html body
+    },
+    (error, response) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Message has been sent");
+        res.send("message envoyé")
+       
+      }
+    }
+  );
+  
 });
 
 module.exports = router;
