@@ -8,6 +8,7 @@ const methodOverride = require("method-override");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
+
 var app = express();
 app.use(methodOverride("_method"));
 
@@ -24,6 +25,22 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+const Session = require("express-session");
+const FileStore = require("session-file-store")(Session);
+
+app.use(
+  Session({
+    store: new FileStore({
+      path: path.join(__dirname, "/tmp"),
+      encrypt: true
+    }),
+    secret: "Super Secret !",
+    resave: true,
+    saveUninitialized: true,
+    name: "sessionId"
+  })
+);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
