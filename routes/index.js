@@ -5,8 +5,7 @@ const nodemailer = require("nodemailer");
 /* GET home page. */
 router.get("/", (req, res, next) => {
   req.session.maVariable = true;
-  res.send(`Salut si tu veux te connecter /session-in
-  si tu veux envoyer un mail /askForCookiesRecipe `);
+  res.render("index");
 });
 
 /* put user with user 
@@ -65,7 +64,9 @@ router.get("/session-in", (req, res) => {
 });
 
 router.get("/session-out", (req, res) => {
-  res.render("session-out", { song: req.session.song });
+  res.render("session-out", {
+    song: req.session.song
+  });
 });
 
 /*------------------- quete email ---------------------*/
@@ -82,8 +83,7 @@ var smtpTransport = nodemailer.createTransport({
 });
 
 router.get("/askForCookiesRecipe", (req, res) => {
-  smtpTransport.sendMail(
-    {
+  smtpTransport.sendMail({
       from: "gmail.user@gmail.com",
       to: "supergrandma@yopmail.com",
       subject: "Coucou !", // Sujet
@@ -100,11 +100,11 @@ router.get("/askForCookiesRecipe", (req, res) => {
       } else {
         console.log("Message has been sent");
         res.send("message envoyé")
-       
+
       }
     }
   );
-  
+
 });
 
 module.exports = router;
